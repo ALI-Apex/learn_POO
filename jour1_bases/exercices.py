@@ -51,9 +51,39 @@ class CompteBancaire:
         print(f"Votre solde est de {self.solde}$")
 
 
+class Rectangle:
+    """Constructeur"""
+
+    def __init__(self, largeur, hauteur):
+        self.largeur = largeur
+        self.hauteur = hauteur
+        self.aire = 0
+        self.perimetre = 0
+
+    """ methodes """
+
+    def calculer_air(self):
+        try:
+            self.aire += float(self.largeur * self.hauteur)
+            print(f"L'aire de votre rectangle est {self.aire}cm2")
+        except ValueError:
+            print("Erreur: entrer des chiffres")
+
+    def calculer_perimetre(self):
+        try:
+            self.perimetre += float((self.largeur * 2) + (self.hauteur * 2))
+            print(f"Le perimetre de votre rectangle est {self.perimetre}cm")
+        except ValueError:
+            print("Erreur: entrer des chiffres")
+
+    def est_carre(self):
+        print(self.largeur == self.hauteur)
+
+
 """ Instanciation """
 personne1 = Personne("ALI", 23, "Lomé")
 compte1 = CompteBancaire("ALI")
+rectangle1 = Rectangle(100, 50)
 
 """ appelle des methodes sur l'objet """
 # class personne
@@ -65,3 +95,8 @@ compte1.afficher_solde()
 compte1.deposer(1000)
 compte1.retirer(500)
 compte1.afficher_solde()
+
+# class rectangle
+rectangle1.calculer_air()
+rectangle1.calculer_perimetre()
+rectangle1.est_carre()
