@@ -3,8 +3,14 @@ class Personne:
 
     def __init__(self, nom, age, ville):
         self.nom = nom
-        self.age = age
         self.ville = ville
+
+        try:
+            self.age = int(age)
+            if self.age < 0:
+                raise ValueError("Erreur: L'age ne doit pas etre negatif")
+        except ValueError:
+            raise ValueError("Erreur: L'age doit etre un nombre entier")
 
     """ Les methodes """
 
@@ -12,13 +18,8 @@ class Personne:
         print(f"Je m'appelle {self.nom}, j'ai {self.age}ans et j'habite à {self.ville}")
 
     def avoir_anniverssaire(self):
-        try:
-            # verifier si l'age est bien un nombre et l'incrementer de 1
-            self.age = int(self.age) + 1
-            # formatage de texte
-            print(f"Joyeux anniverssaire {self.nom}, tu as maintenant {self.age}ans")
-        except ValueError:
-            print("Erreur: La variable age doit etre un chiffre")
+        self.age += 1
+        print(f"Joyeux anniverssaire {self.nom}, tu as maintenant {self.age}ans")
 
 
 class CompteBancaire:
@@ -30,7 +31,15 @@ class CompteBancaire:
 
     def deposer(self, montant):
         try:
-            self.solde += int(montant)
+            # convertir le montant
+            montant = float(montant)
+
+            # verifier si le montant est positif
+            if montant <= 0:
+                print("Erreur: le montant doit etre positif")
+                return
+
+            self.solde += montant
             print(
                 f"Vous avez deposer {montant}$ sur votre compte, votre nouveau solde est {self.solde}$"
             )
@@ -38,46 +47,64 @@ class CompteBancaire:
             print("Erreur: Veuillez entrer un montant valide")
 
     def retirer(self, montant):
-        if self.solde > 0:
-            try:
-                self.solde -= int(montant)
-                print(f"Vous avez retiré {montant}$")
-            except ValueError:
-                print("Erreur: Veuillez entrer un montant valide")
-        elif self.solde < 0:
-            print("Votre solde est insuffisant")
+        try:
+            montant = float(montant)
+
+            # verifier si le montant est positif
+            if montant <= 0:
+                print("Erreur: le montant doit etre positif")
+                return
+
+            # verifier si le solde est suffisant
+            if montant > self.solde:
+                print("Votre solde est insuffisant")
+                return
+
+            self.solde -= montant
+            print(f"Vous avez retiré {montant}$")
+        except ValueError:
+            print("Erreur: Veuillez entrer un montant valide")
 
     def afficher_solde(self):
-        print(f"Votre solde est de {self.solde}$")
+        print(f"Titulaire : {self.titulaire}")
+        print(f"Solde : {self.solde}$")
 
 
 class Rectangle:
     """Constructeur"""
 
     def __init__(self, largeur, hauteur):
-        self.largeur = largeur
-        self.hauteur = hauteur
-        self.aire = 0
-        self.perimetre = 0
+        """Validation des attributs"""
+        try:
+            self.largeur = float(largeur)
+            self.hauteur = float(hauteur)
 
-    """ methodes """
+            if self.hauteur < 0 or self.largeur < 0:
+                raise ValueError("Les dimensions doivent etre positives")
+        except ValueError:
+            raise ValueError(
+                "Erreur: les dimenssions doivent etre des nombres positives"
+            )
+
+    """ Methodes """
 
     def calculer_air(self):
-        try:
-            self.aire += float(self.largeur * self.hauteur)
-            print(f"L'aire de votre rectangle est {self.aire}cm2")
-        except ValueError:
-            print("Erreur: entrer des chiffres")
+        aire = self.largeur * self.hauteur
+        print(f"L'aire de votre rectangle est {aire}cm2")
+        return aire
 
     def calculer_perimetre(self):
-        try:
-            self.perimetre += float((self.largeur * 2) + (self.hauteur * 2))
-            print(f"Le perimetre de votre rectangle est {self.perimetre}cm")
-        except ValueError:
-            print("Erreur: entrer des chiffres")
+        perimetre = 2 * (self.largeur + self.hauteur)
+        print(f"Le perimetre de votre rectangle est {perimetre}cm")
+        return perimetre
 
     def est_carre(self):
-        print(self.largeur == self.hauteur)
+        if self.largeur == self.hauteur:
+            print(f"Oui, c'est un carré de cotés {self.largeur}")
+            return True
+        else:
+            print("Non, ce n'est pas un carré")
+            return False
 
 
 """ Instanciation """
